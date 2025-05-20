@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour, IObservable<GameStatus>
     public GameObject playButton;
     public GameObject startGameLabel;
     public TextMeshProUGUI scoreLabel;
-    public bool isRunning = false;
     public float gameSpeed = 0;
     public int score { get; private set; } = 0;
 
@@ -45,9 +44,8 @@ public class GameManager : MonoBehaviour, IObservable<GameStatus>
 
     public void Play()
     {
-        score = 0;
+        ResetScore();
         gameSpeed = BASE_GAME_SPEED;
-        isRunning = true;
         playButton.SetActive(false);
         startGameLabel.SetActive(false);
         NotifySubscribers(GameStatus.Running);
@@ -55,7 +53,6 @@ public class GameManager : MonoBehaviour, IObservable<GameStatus>
 
     public void GameOver()
     {
-        isRunning = false;
         gameSpeed = 0;
         playButton.SetActive(true);
         startGameLabel.SetActive(true);
@@ -85,5 +82,11 @@ public class GameManager : MonoBehaviour, IObservable<GameStatus>
         {
             observer.OnUpdate(status);
         }
+    }
+
+    private void ResetScore()
+    {
+        score = 0;
+        scoreLabel.text = score.ToString();
     }
 }
